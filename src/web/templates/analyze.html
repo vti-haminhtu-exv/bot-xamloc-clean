@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Phân tích</h2>
+    </div>
+    <div class="card-body">
+        {% if error %}
+            <p class="text-danger">Lỗi: {{ error }}</p>
+        {% else %}
+            <h3>Phân tích dữ liệu huấn luyện</h3>
+            <ul>
+                {% for item in analysis %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+            <h3>Biểu đồ tiền thưởng</h3>
+            <canvas id="moneyChart" width="400" height="200"></canvas>
+        {% endif %}
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        {% if money_history %}
+            var ctx = document.getElementById('moneyChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: {{ money_history|length }}}, (_, i) => i + 1),
+                    datasets: [{
+                        label: 'Tiền/Trò chơi',
+                        data: {{ money_history|tojson }},
+                        borderColor: 'dodgerblue',
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Trò chơi' } },
+                        y: { title: { display: true, text: 'Tiền thắng/thua' } }
+                    }
+                }
+            });
+        {% endif %}
+    });
+</script>
+{% endblock %}

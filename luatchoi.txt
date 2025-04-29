@@ -1,0 +1,53 @@
+Luật chơi Xâm Lốc Solo cho 2 người (phiên bản điều chỉnh)
+1. Chuẩn bị
+Bộ bài: Sử dụng bộ bài Tây 52 lá (không dùng lá Joker).
+Số lá bài chia: Mỗi người chơi được chia 10 lá bài.
+Xếp hạng lá bài:
+Giá trị từ nhỏ đến lớn: 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K, A, 2.
+Không phân biệt chất bài: Các lá bài cùng giá trị được coi là bằng nhau, không thể chặn nhau dù khác chất (ví dụ: 5♥ không chặn được 5♠).
+Mục tiêu: Đánh hết bài trên tay trước đối thủ để giành chiến thắng.
+2. Bắt đầu ván chơi
+Chia bài: Một người chia bài (có thể luân phiên sau mỗi ván). Chia lần lượt cho mỗi người 10 lá, úp bài trước mặt từng người.
+Xác định lượt đi đầu:
+Mỗi ván, random xem ai đi trước (có thể tung đồng xu, rút bài ngẫu nhiên, hoặc dùng cách khác để quyết định).
+Người đi đầu có quyền đánh bất kỳ bộ bài nào.
+3. Cách đánh bài
+Luật đánh: Người chơi lần lượt đánh bài luân phiên. Người sau phải đánh bài lớn hơn bài trước hoặc "bỏ lượt" nếu không có bài chặn được.
+Các loại bài:
+Bài lẻ: Một lá bài đơn (ví dụ: 5♦).
+Đôi: Hai lá bài cùng số (ví dụ: 7♠ - 7♥).
+Sám: Ba lá bài cùng số (ví dụ: 9♣ - 9♦ - 9♥).
+Sảnh: Từ 3 lá trở lên có số liên tiếp (ví dụ: 4♠ - 5♥ - 6♦).
+Tứ quý: Bốn lá bài cùng số (ví dụ: 8♠ - 8♥ - 8♦ - 8♣). Tứ quý có thể chặn lá 2 hoặc một tứ quý nhỏ hơn.
+Chặn bài:
+Bài lẻ chặn bài lẻ nhỏ hơn (ví dụ: 8♥ chặn 6♠, nhưng 8♥ không chặn được 8♠).
+Đôi chặn đôi, sám chặn sám, sảnh chặn sảnh (sảnh dài hơn hoặc có giá trị lớn hơn sẽ thắng).
+Lá 2 (heo) là bài lẻ lớn nhất, nhưng có thể bị tứ quý chặn.
+Tứ quý lớn hơn chặn được tứ quý nhỏ hơn (ví dụ: tứ quý 9 chặn tứ quý 7).
+4. Luật đặc biệt
+Báo Sâm:
+Người chơi có thể "báo Sâm" ngay đầu lượt (trước khi đánh lá đầu tiên) nếu tự tin đánh hết bài mà không bị chặn.
+Thành công: Thắng ngay và được thưởng 20 lá (tính điểm thưởng).
+Thất bại: Thua và bị phạt 20 lá (tính điểm phạt).
+Thối bài:
+Thối 2: Nếu còn lá 2 trên tay khi đối thủ hết bài, bị phạt thêm 10 lá.
+Thối tứ quý: Nếu còn tứ quý trên tay khi đối thủ hết bài, bị phạt thêm 10 lá.
+Bị chặn tứ quý:
+Nếu đánh tứ quý mà bị đối thủ chặn bằng tứ quý lớn hơn, người đánh tứ quý bị phạt thêm 10 lá.
+Đánh liên tục: Người chơi có thể đánh liên tiếp các bộ bài nếu đối thủ không chặn được, cho đến khi bị chặn hoặc hết bài.
+5. Kết thúc ván
+Thắng: Người đánh hết bài trước là người thắng ván.
+Tính điểm:
+Người thua bị trừ điểm dựa trên số lá bài còn lại trên tay.
+Mỗi lá bài tính 1 điểm.
+Phạt thêm 10 lá nếu thối 2, thối tứ quý, hoặc bị chặn tứ quý.
+Báo Sâm thành công: Thưởng 20 lá cho người thắng.
+Báo Sâm thất bại: Phạt 20 lá cho người thua.
+Ví dụ: Nếu người thua còn 5 lá, trong đó có 1 lá 2, điểm phạt là 5 + 10 = 15 lá.
+6. Chơi nhiều ván
+Chơi nhiều ván để tính điểm tổng (ví dụ: ai đạt 100 điểm trước thì thua, hoặc ai ít điểm hơn sau 5 ván thì thắng).
+Mỗi ván random lại người đi đầu.
+Ví dụ ván chơi
+Người A: 3♠, 5♥, 6♦, 7♣, 8♥, 9♦, J♠, Q♥, K♦, 2♣.
+Người B: 4♣, 5♠, 6♥, 7♦, 9♣, 10♥, J♦, Q♠, K♣, A♥.
+Ván 1: Random chọn người A đi trước, đánh 3♠. Người B chặn bằng 4♣. Người A đánh 5♥, người B không chặn được vì 5♠ không đè được 5♥ (do không phân biệt chất), bỏ lượt. Trò chơi tiếp tục...

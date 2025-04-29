@@ -1,0 +1,28 @@
+venv/
+.env/
+*.env
+*.log
+*.json
+__pycache__/
+*.pyc
+.DS_Store
+# Bỏ thư mục môi trường phát triển
+.idea/
+__pycache__/
+*.pyc
+
+# Bỏ các thư mục không cần thiết
+card_recognition_project.egg-info/
+xam_loc_solo_ai.egg-info/
+docs/
+test/
+
+# Bỏ file model nặng
+*.pth
+
+# Bỏ file script không cần thiết
+
+money_history.png
+
+# Hệ thống (macOS)
+.DS_Store

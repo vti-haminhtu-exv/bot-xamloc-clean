@@ -1,0 +1,217 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Demo</h2>
+    </div>
+    <div class="card-body">
+        <form id="demo-form">
+            <div class="form-group">
+                <label for="bet_unit">Đơn vị cược:</label>
+                <input type="number" class="form-control" id="bet_unit" name="bet_unit" value="1" min="1">
+            </div>
+            <button type="submit" class="btn btn-primary">Bắt đầu Demo</button>
+        </form>
+        <div id="demo-log" class="mt-3" style="max-height: 400px; overflow-y: auto; white-space: pre-wrap;">
+            <!-- Log demo sẽ hiển thị ở đây -->
+        </div>
+    </div>
+</div>
+// Script cải tiến cho demo.html
+<script>
+    console.log('[Demo] Bắt đầu tải script...');
+
+    // Hàm đợi jQuery load xong
+    function waitForjQuery(callback, attempts = 50, interval = 100) {
+        if (window.jQuery) {
+            console.log('[Demo] jQuery sẵn sàng.');
+            callback(jQuery);
+        } else if (attempts > 0) {
+            console.warn(`[Demo] jQuery chưa tải, thử lại sau ${interval}ms (${attempts} lần còn lại)...`);
+            setTimeout(function() {
+                waitForjQuery(callback, attempts - 1, interval);
+            }, interval);
+        } else {
+            console.error('[Demo] jQuery không tải được sau nhiều lần thử.');
+            document.getElementById('demo-log').innerHTML += '<p class="text-danger">Lỗi: Không tải được jQuery.</p>';
+        }
+    }
+
+    waitForjQuery(function($) {
+        console.log('[Demo] jQuery đã tải thành công.');
+        console.log('[Demo] Khởi tạo script.');
+
+        $(document).ready(function() {
+            console.log('[Demo] DOM sẵn sàng, gắn sự kiện submit.');
+
+            // Biến theo dõi trạng thái
+            var connectionErrors = 0;
+            var maxConnectionErrors = 5;
+            var isRunningDemo = false;
+
+            // Cải thiện giao diện form
+            $('#demo-form').addClass('mb-4');
+            $('#bet_unit').after('<small class="form-text text-muted">Đơn vị cược ảnh hưởng đến số tiền thắng/thua.</small>');
+
+            // Thêm ID cho nút submit để có thể điều khiển dễ dàng
+            $('button[type="submit"]', '#demo-form').attr('id', 'demo-submit-btn');
+
+            // Thêm controls cho demo log
+            $('#demo-log').before('<div class="mt-3 mb-2">' +
+                '<button class="btn btn-sm btn-outline-secondary mr-2" id="clear-log-btn">Xóa log</button>' +
+                '<button class="btn btn-sm btn-outline-primary" id="copy-log-btn">Sao chép log</button>' +
+            '</div>');
+
+            // Thêm biểu tượng loading
+            $('#demo-log').before('<div id="demo-loading" class="text-center py-3" style="display:none;">' +
+                '<div class="spinner-border text-primary" role="status">' +
+                '<span class="sr-only">Đang tải...</span>' +
+                '</div>' +
+                '<p class="mt-2">Đang chạy demo, vui lòng đợi...</p>' +
+            '</div>');
+
+            // Định dạng demo-log
+            $('#demo-log').css({
+                'max-height': '500px',
+                'overflow-y': 'auto',
+                'overflow-x': 'hidden',
+                'padding': '10px',
+                'border': '1px solid #dee2e6',
+                'border-radius': '4px',
+                'background-color': '#f8f9fa',
+                'white-space': 'pre-wrap'
+            });
+
+            // Xử lý sự kiện clear log
+            $('#clear-log-btn').on('click', function() {
+                if (isRunningDemo) {
+                    alert('Không thể xóa log khi demo đang chạy!');
+                    return;
+                }
+                $('#demo-log').html('<p class="text-muted">Log đã bị xóa.</p>');
+            });
+
+            // Xử lý sự kiện copy log
+            $('#copy-log-btn').on('click', function() {
+                const logText = $('#demo-log').text();
+                navigator.clipboard.writeText(logText).then(function() {
+                    alert('Đã sao chép log vào clipboard');
+                }, function() {
+                    alert('Không thể sao chép, vui lòng copy thủ công');
+                });
+            });
+
+            // Xử lý sự kiện submit form
+            $('#demo-form').on('submit', function(e) {
+                e.preventDefault();
+
+                // Kiểm tra nếu đang chạy demo
+                if (isRunningDemo) {
+                    alert('Demo đang chạy, vui lòng đợi đến khi hoàn thành!');
+                    return;
+                }
+
+                // Lấy giá trị đơn vị cược
+                var betUnit = $('#bet_unit').val();
+                console.log('[Demo] Gửi yêu cầu POST /demo với bet_unit:', betUnit);
+
+                // Hiển thị thông báo loading
+                $('#demo-log').html('<p class="text-info">Đang khởi động demo...</p>');
+                $('#demo-loading').show();
+                $('#demo-submit-btn').prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Đang xử lý...');
+
+                // Đặt cờ đang chạy demo
+                isRunningDemo = true;
+                connectionErrors = 0;
+
+                // Gửi request AJAX
+                $.ajax({
+                    url: '/demo',
+                    type: 'POST',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: { bet_unit: betUnit },
+                    timeout: 60000  // Timeout sau 60 giây
+                }).then(function(response) {
+                    // Đã nhận được phản hồi thành công
+                    console.log('[Demo] POST /demo thành công:', response);
+
+                    // Khôi phục trạng thái UI
+                    isRunningDemo = false;
+                    $('#demo-loading').hide();
+                    $('#demo-submit-btn').prop('disabled', false).text('Bắt đầu Demo');
+
+                    // Xử lý log
+                    if (response.status === "Completed" && response.log) {
+                        // Hiển thị log với định dạng HTML
+                        $('#demo-log').html(response.log.join('<br>'));
+                        console.log('[Demo] Đã cập nhật #demo-log với', response.log.length, 'dòng.');
+
+                        // Thêm thông tin tóm tắt sau log
+                        let winnerText = response.winner === 0 ? "P0 (Người chơi)" : "P1 (AI)";
+                        let moneyText = Math.abs(response.money_earned || 0);
+
+                        $('#demo-log').append(`
+                            <div class="mt-3 pt-3 border-top">
+                                <h5>Tóm tắt kết quả</h5>
+                                <p><strong>Người thắng:</strong> ${winnerText}</p>
+                                <p><strong>Tiền thưởng/phạt:</strong> ${moneyText} đơn vị</p>
+                            </div>
+                        `);
+                    } else {
+                        $('#demo-log').html('<p class="text-danger">Lỗi: Không nhận được log demo.</p>');
+                    }
+
+                    // Cuộn xuống cuối log
+                    $('#demo-log').scrollTop($('#demo-log')[0].scrollHeight);
+                }).catch(function(xhr) {
+                    // Xử lý lỗi
+                    isRunningDemo = false;
+                    $('#demo-loading').hide();
+                    $('#demo-submit-btn').prop('disabled', false).text('Bắt đầu Demo');
+
+                    var errorMsg = xhr.responseJSON ? xhr.responseJSON.message : 'Không thể kết nối tới server';
+                    console.error('[Demo] Lỗi POST /demo:', xhr.status, errorMsg, xhr);
+                    $('#demo-log').html(`<p class="text-danger">Lỗi: ${errorMsg} (Status: ${xhr.status})</p>`);
+
+                    // Tăng số lỗi kết nối
+                    connectionErrors++;
+                    if (connectionErrors >= maxConnectionErrors) {
+                        $('#demo-log').append(`<p class="text-warning">Đã xảy ra ${maxConnectionErrors} lỗi kết nối liên tiếp. Vui lòng kiểm tra kết nối mạng và làm mới trang.</p>`);
+                    }
+                });
+            });
+
+            // Kiểm tra trạng thái demo khi tải trang
+            function checkDemoStatus() {
+                $.ajax({
+                    url: '/demo/status',
+                    type: 'GET',
+                    success: function(response) {
+                        console.log('[Demo] Trạng thái demo:', response);
+
+                        // Hiển thị thông tin trạng thái nếu cần
+                        if (response.status === "Ready") {
+                            // Có thể hiển thị thông tin mô hình đã nạp
+                            if (response.model_loaded) {
+                                $('#demo-log').append('<p class="text-success small">Mô hình AI đã được nạp thành công.</p>');
+                            } else {
+                                $('#demo-log').append('<p class="text-warning small">Mô hình AI chưa được nạp, sẽ sử dụng AI mặc định.</p>');
+                            }
+                        }
+                    },
+                    error: function(xhr) {
+                        console.warn('[Demo] Không thể lấy trạng thái demo:', xhr.status);
+                    }
+                });
+            }
+
+            // Khởi tạo log nếu trống
+            if ($('#demo-log').is(':empty')) {
+                $('#demo-log').html('<p class="text-muted">Sẵn sàng chạy demo. Nhấn "Bắt đầu Demo" để bắt đầu.</p>');
+                // Kiểm tra trạng thái demo
+                checkDemoStatus();
+            }
+        });
+    });
+</script>
+{% endblock %}

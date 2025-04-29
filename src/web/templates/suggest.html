@@ -1,0 +1,70 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Gợi ý</h2>
+    </div>
+    <div class="card-body">
+        <form id="suggest-form">
+            <div class="form-group">
+                <label for="hand">Bài của bạn (ví dụ: 3s,4c,Jd):</label>
+                <input type="text" class="form-control" id="hand" placeholder="3s,4c,Jd">
+            </div>
+            <div class="form-group">
+                <label for="table">Bài trên bàn (để trống nếu không có):</label>
+                <input type="text" class="form-control" id="table" placeholder="5h,Qd">
+            </div>
+            <div class="form-group">
+                <label for="opp_cards">Số bài của đối thủ (0-10):</label>
+                <input type="number" class="form-control" id="opp_cards" value="10" min="0" max="10">
+            </div>
+            <div class="form-group">
+                <label for="last_player">Người chơi cuối cùng:</label>
+                <select class="form-control" id="last_player">
+                    <option value="None">Không có</option>
+                    <option value="0">Bạn (0)</option>
+                    <option value="1">Đối thủ (1)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="passes">Số lượt bỏ liên tiếp:</label>
+                <input type="number" class="form-control" id="passes" value="0" min="0">
+            </div>
+            <div class="form-group">
+                <label for="xam_declared">Xâm đã báo:</label>
+                <select class="form-control" id="xam_declared">
+                    <option value="None">Không có</option>
+                    <option value="0">Bạn (0)</option>
+                    <option value="1">Đối thủ (1)</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Lấy gợi ý</button>
+        </form>
+        <div id="suggest-result" class="mt-3" style="white-space: pre-wrap;"></div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#suggest-form').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/suggest',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    hand: $('#hand').val(),
+                    table: $('#table').val(),
+                    opp_cards: $('#opp_cards').val(),
+                    xam_declared: $('#xam_declared').val(),
+                    last_player: $('#last_player').val(),
+                    passes: $('#passes').val()
+                })
+            }).done(function(response) {
+                $('#suggest-result').html(response.suggestion);
+            }).fail(function(xhr) {
+                $('#suggest-result').html(`<p class="text-danger">Lỗi: ${xhr.responseJSON ? xhr.responseJSON.error : 'Không thể kết nối'}</p>`);
+            });
+        });
+    });
+</script>
+{% endblock %}
